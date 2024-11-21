@@ -1,0 +1,103 @@
+<!-- templates/form.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>{{ title }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <h1>{{ title }}</h1>
+        {% if error %}
+            <div class="error">
+                <p>{{ error }}</p>
+            </div>
+        {% endif %}
+        <form action="/predict" method="post">
+            {% for feature in features %}
+                <div class="form-group">
+                    {% if feature in ['Sex', 'Ascites', 'Hepatomegaly', 'Spiders', 'Edema', 'Status'] %}
+                        <label for="{{ feature }}">
+                            {% if feature == 'Sex' %}
+                                Sex:
+                            {% elif feature == 'Ascites' %}
+                                Ascites (Presence):
+                            {% elif feature == 'Hepatomegaly' %}
+                                Hepatomegaly (Presence):
+                            {% elif feature == 'Spiders' %}
+                                Spiders (Presence):
+                            {% elif feature == 'Edema' %}
+                                Edema (Presence):
+                            {% elif feature == 'Status' %}
+                                Status:
+                            {% endif %}
+                        </label>
+                        {% if feature == 'Status' %}
+                            <select id="{{ feature }}" name="{{ feature }}" required>
+                                <option value="" disabled selected>Select Status</option>
+                                <option value="C">C</option>
+                                <option value="CL">CL</option>
+                                <option value="D">D</option>
+                            </select>
+                        {% else %}
+                            <select id="{{ feature }}" name="{{ feature }}" required>
+                                <option value="" disabled selected>Select {{ feature.replace('_', ' ') }}</option>
+                                {% if feature == 'Sex' %}
+                                    <option value="Male">Male</option>
+                                    <option value="Female">Female</option>
+                                    <!-- Add other options if applicable -->
+                                {% else %}
+                                    <option value="Yes">Yes</option>
+                                    <option value="No">No</option>
+                                {% endif %}
+                            </select>
+                        {% endif %}
+                    {% else %}
+                        <label for="{{ feature }}">
+                            {% if feature == 'N_Days' %}
+                                Number of Days (Test Result):
+                            {% elif feature == 'Age' %}
+                                Age (Test Result):
+                            {% elif feature == 'Bilirubin' %}
+                                Bilirubin Level (mg/dL):
+                            {% elif feature == 'Cholesterol' %}
+                                Cholesterol Level (mg/dL):
+                            {% elif feature == 'Albumin' %}
+                                Albumin Level (g/dL):
+                            {% elif feature == 'Copper' %}
+                                Copper Level (µg/dL):
+                            {% elif feature == 'Alk_Phos' %}
+                                Alkaline Phosphatase Level (U/L):
+                            {% elif feature == 'SGOT' %}
+                                SGOT Level (U/L):
+                            {% elif feature == 'Tryglicerides' %}
+                                Triglycerides Level (mg/dL):
+                            {% elif feature == 'Platelets' %}
+                                Platelet Count (×10³/µL):
+                            {% elif feature == 'Prothrombin' %}
+                                Prothrombin Time (%):
+                            {% elif feature == 'Stage' %}
+                                Disease Stage:
+                            {% endif %}
+                        </label>
+                        <input 
+                            type="number" 
+                            id="{{ feature }}" 
+                            name="{{ feature }}" 
+                            placeholder="Enter {{ feature.replace('_', ' ') }}" 
+                            value="{{ request.form.get(feature, '') }}"
+                            required
+                            step="any"
+                            min="0"
+                        >
+                    {% endif %}
+                </div>
+            {% endfor %}
+            <button type="submit">Predict</button>
+        </form>
+    </div>
+</body>
+</html>

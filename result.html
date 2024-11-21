@@ -1,0 +1,20 @@
+<!-- templates/result.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Prediction Result</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <h1>Prediction Result</h1>
+        <div class="result">
+            <p><strong>Predicted Drug:</strong> {{ predicted_drug }}</p>
+        </div>
+        <a href="/" class="back-button">Predict Another</a>
+    </div>
+</body>
+</html>
